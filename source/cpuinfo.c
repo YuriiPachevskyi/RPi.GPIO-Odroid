@@ -36,31 +36,11 @@ int get_rpi_info(rpi_info *info)
    int found = 0;
    int len;
 
-   if ((fp = fopen("/proc/cpuinfo", "r")) == NULL)
-      return -1;
-   while(!feof(fp)) {
-      fgets(buffer, sizeof(buffer), fp);
-      sscanf(buffer, "Hardware	: %s", hardware);
-      if (strcmp(hardware, "BCM2708") == 0 ||
-          strcmp(hardware, "BCM2709") == 0 ||
-          strcmp(hardware, "BCM2835") == 0 ||
-          strcmp(hardware, "BCM2836") == 0 ||
-          strcmp(hardware, "BCM2837") == 0 ) {
-         found = 1;
-         odroid_found = 0;
-      }
-      else {  //Check for Odroid
-        if (strstr(hardware, "ODROID")) {
-            odroid_found = found = 1;
-            setInfoOdroid(hardware, (void *)info);
-        }
-      }
-      sscanf(buffer, "Revision	: %s", revision);
-   }
-   fclose(fp);
+   odroid_found = found = 1;
+   setInfoOdroid(hardware, (void *)info);
 
     if (odroid_found) {
-        strcpy(info->revision, revision);
+        strcpy(info->revision, "1");
         return 0;
     }
 

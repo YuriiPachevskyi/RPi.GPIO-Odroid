@@ -72,13 +72,8 @@ int gpio_export(unsigned int gpio)
     int fd, len;
     char str_gpio[3];
 
-  if ( odroid_found ) {
-    if ((fd = open("/sys/class/aml_gpio/export", O_WRONLY)) < 0)
-        return -1;
-  } else {
     if ((fd = open("/sys/class/gpio/export", O_WRONLY)) < 0)
        return -1;
-  }
 
     len = snprintf(str_gpio, sizeof(str_gpio), "%d", gpio);
     write(fd, str_gpio, len);
@@ -92,13 +87,8 @@ int gpio_unexport(unsigned int gpio)
     int fd, len;
     char str_gpio[3];
 
-  if ( odroid_found ) {
-    if ((fd = open("/sys/class/aml_gpio/unexport", O_WRONLY)) < 0)
-        return -1;
-  } else {
     if ((fd = open("/sys/class/gpio/unexport", O_WRONLY)) < 0)
         return -1;
-  }
 
     len = snprintf(str_gpio, sizeof(str_gpio), "%d", gpio);
     write(fd, str_gpio, len);
@@ -112,11 +102,8 @@ int gpio_set_direction(unsigned int gpio, unsigned int in_flag)
     int retry;
     struct timespec delay;
     int fd;
-    char filename[33];
+    char filename[48];
 
-  if ( odroid_found )
-    snprintf(filename, sizeof(filename), "/sys/class/aml_gpio/gpio%d/direction", gpio);
-  else
     snprintf(filename, sizeof(filename), "/sys/class/gpio/gpio%d/direction", gpio);
 
     // retry waiting for udev to set correct file permissions
@@ -142,11 +129,8 @@ int gpio_set_direction(unsigned int gpio, unsigned int in_flag)
 int gpio_set_edge(unsigned int gpio, unsigned int edge)
 {
     int fd;
-    char filename[28];
+    char filename[48];
 
-  if ( odroid_found )
-    snprintf(filename, sizeof(filename), "/sys/class/aml_gpio/gpio%d/edge", gpio);
-  else
     snprintf(filename, sizeof(filename), "/sys/class/gpio/gpio%d/edge", gpio);
 
     if ((fd = open(filename, O_WRONLY)) < 0)
@@ -160,12 +144,9 @@ int gpio_set_edge(unsigned int gpio, unsigned int edge)
 int open_value_file(unsigned int gpio)
 {
     int fd;
-    char filename[29];
+    char filename[48];
 
     // create file descriptor of value file
-  if ( odroid_found )
-    snprintf(filename, sizeof(filename), "/sys/class/aml_gpio/gpio%d/value", gpio);
-  else
     snprintf(filename, sizeof(filename), "/sys/class/gpio/gpio%d/value", gpio);
     if ((fd = open(filename, O_RDONLY | O_NONBLOCK)) < 0)
         return -1;

@@ -722,33 +722,13 @@ void setInfoOdroid(char *hardware, void *vinfo)
 {
     rpi_info *info = (rpi_info *)vinfo;
 
-    if (strcmp(hardware, "ODROIDC") == 0)
-    {
-        piModel = PI_MODEL_ODROIDC;
-        info->type = "ODROID-C1/C1+";
-        info->p1_revision = 3;
-        info->ram = "1024M";
-        info->manufacturer = "Hardkernel";
-        info->processor = "AMLS805";
-    }
-    else if (strcmp(hardware, "ODROID-C2") == 0)
-    {
-        piModel = PI_MODEL_ODROIDC2;
-        info->p1_revision = 3;
-        info->type = "ODROID-C2";
-        info->ram = "1024M";
-        info->manufacturer = "Hardkernel";
-        info->processor = "AMLS905";
-    }
-    else if (strcmp(hardware, "ODROID-XU4") == 0)
-    {
-        piModel = PI_MODEL_ODROIDXU_34;
-        info->type = "ODROID-XU3/4";
-        info->p1_revision = 3;
-        info->ram = "2048M";
-        info->manufacturer = "Hardkernel";
-        info->processor = "EXY5422";
-    }
+    piModel = PI_MODEL_ODROIDC2;
+    info->p1_revision = 3;
+    info->type = "ODROID-C2";
+    info->ram = "1024M";
+    info->manufacturer = "Hardkernel";
+    info->processor = "AMLS905";
+
     return;
 }
 
@@ -770,3 +750,4 @@ void setMappingPtrsOdroid(void)
         bcm_to_odroidgpio = &bcmToOGpioOdroidXU;
     }
 }
+
